@@ -19,13 +19,18 @@
     }
     
 
-    
-
     .all-products-container {
         width: 100%;
         display: flex;
         flex-direction: column;
         margin-bottom: 20px;
+
+        .empty{
+            span{
+                margin: 20px 0;
+                font-size: 0.8rem;
+            } 
+        }
         
 
         @include desktop {

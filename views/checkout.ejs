@@ -19,6 +19,11 @@
             <div class="header-container">
                 <span>shopping bag items</span>
             </div>
+            <% if(user.cart.length < 1){ %>
+                <div class="empty">
+                    <span>Your cart is empty</span>
+                </div>
+            <% } %>
 
             <% user.cart.forEach( (product) => { %>
 
@@ -82,7 +87,7 @@
                 <span><%= user.totalCartPrice %> SEK</span>
             </div>
             <div class="checkout-button-container">
-                <button id="checkout-btn">Proceed to checkout</button>
+                <button id="btn">Proceed to checkout</button>
             </div>
 
 
@@ -93,15 +98,17 @@
 
     <%- include ("partial/footer.ejs") %>
 
-
     <script src="https://js.stripe.com/v3/"></script>
     <script>
-        var Stripe = Stripe("pk_test_cLRg2lVu4n0UdF6x7cGt7D9I00b2qLWdEX");
-        document.querySelector("#checkout-btn").addEventListener("click", ()=>{
+        // if(user.cart.length >= 1){
+            var stripe = Stripe("pk_test_cLRg2lVu4n0UdF6x7cGt7D9I00b2qLWdEX");
+            document.querySelector("#btn").addEventListener("click", ()=>{
             stripe.redirectToCheckout({
-                sessionId: "<%=sessionId%>"
+                    sessionId: "<%=sessionId%>"
+                });
             });
-        });
+        // }
+        
     </script>
 
 </body>

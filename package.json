@@ -13,7 +13,8 @@
     "test": "mocha",
     "cypress:open": "cypress open",
     "mon": "nodemon index",
-    "start": "node index"
+    "start": "node index",
+    "sass": "node scss -o --watch css"
   },
   "repository": {
     "type": "git",

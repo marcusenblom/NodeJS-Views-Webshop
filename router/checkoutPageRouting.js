@@ -25,23 +25,25 @@ router.get("/checkout", verifyToken, async (req, res) => {
     user.totalCartPrice = totalPrice;
     await user.save()
 
-    return stripe.checkout.sessions.create({
-        payment_method_types: ["card"],
-        line_items: user.cart.map((product)=>{
-            return {
-                name: product.productId.title,
-                amount: product.productId.price * 100,
-                quantity: product.amount, // Hämtar från usermodel > cart > amount
-                currency: "sek"
-            }
-        }),
-        success_url: "http://localhost:4000/",
-        cancel_url: "http://localhost:4000/products"
-    }).then( (session) => {
-        res.render("checkout", {user, sessionId: session.id})
-    });
-
-    // res.render('checkout', {user});
+    if(user.cart.length >= 1){
+        return stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
+            line_items: user.cart.map((product)=>{
+                return {
+                    name: product.productId.title,
+                    amount: product.productId.price*100,
+                    quantity: product.amount, // Hämtar från usermodel > cart > amount
+                    currency: "sek"
+                }
+            }),
+            success_url: "http://localhost:4000/",
+            cancel_url: "http://localhost:4000/checkout"
+        }).then( (session) => {
+            res.render("checkout", {user, sessionId:session.id})
+        }); 
+    } else {
+        res.render("checkout", {user, sessionId: undefined})
+    }
     
     
 });

@@ -67,28 +67,6 @@ router.get("/deleteCart/:index", verifyToken, async (req, res) => {
 });
 
 
-router.get("/order", verifyToken, async (req, res) => {
-
-    const user = await User.findOne({_id: req.user.user._id}).populate("cart.productId");
-    
-
-    return stripe.checkout.sessions.create({
-        payment_method_types: ["card"],
-        line_items: user.cart.map((product)=>{
-            return {
-                name: product.productId.title,
-                amount: product.productId.price * 100,
-                quantity: amount, // Hämtar från usermodel > cart > amount
-                currency: "sek"
-            }
-        }),
-        sucess_url: "http://localhost:4000/",
-        cancel_url: "http://localhost:4000/products"
-    }).then( (session) => {
-        res.render("checkout", {user, sessionId: session.id})
-    });
-
-});
 
 
 
