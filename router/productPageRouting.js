@@ -25,6 +25,7 @@ router.get("/products", async (req, res) => {
 
     const productsShow = await Product.find()
         .limit(itemsToShow);
+    
 
     res.render("productPage", {
         heading,
